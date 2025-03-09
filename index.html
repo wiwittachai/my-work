@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ระบบสต๊อกเตียงโรงพยาบาล</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #e3f2fd; /* สีพื้นหลังแบบฟ้าอ่อน */
+            text-align: center;
+            padding: 20px;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+            display: inline-block;
+            max-width: 350px;
+            border: 2px solid #0288d1; /* กรอบสีฟ้า */
+        }
+        h1 {
+            color: #0277bd; /* สีฟ้าเข้มสำหรับหัวเรื่อง */
+            margin-bottom: 30px;
+        }
+        .bed-card {
+            border: 1px solid #0288d1;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 15px auto;
+            text-align: center;
+            background: #ffffff;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+        .bed-card img {
+            width: 100%;
+            border-radius: 10px;
+            margin-bottom: 10px;
+        }
+        .bed-info {
+            font-size: 18px;
+            margin-top: 10px;
+        }
+        button {
+            background-color: #0288d1;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            margin: 10px 5px;
+            font-size: 18px;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #01579b;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>เตียงนอนในห้องพยาบาล</h1>
+
+        <!-- Bed 1 -->
+        <div class="bed-card">
+            <img src="https://inwfile.com/s-dx/y6ukmk.png" alt="เตียงโรงพยาบาล">
+            <p class="bed-info">เตียงที่ 1</p>
+            <p class="bed-info">สถานะ: <span id="bed1Status">กำลังโหลด...</span></p>
+         
+        </div>
+
+        <!-- Bed 2 -->
+        <div class="bed-card">
+            <img src="https://inwfile.com/s-dx/y6ukmk.png" alt="เตียงโรงพยาบาล">
+            <p class="bed-info">เตียงที่ 2</p>
+            <p class="bed-info">สถานะ: <span id="bed2Status">กำลังโหลด...</span></p>
+        
+        </div>
+
+        <!-- Bed 3 -->
+        <div class="bed-card">
+            <img src="https://inwfile.com/s-dx/y6ukmk.png" alt="เตียงโรงพยาบาล">
+            <p class="bed-info">เตียงที่ 3</p>
+            <p class="bed-info">สถานะ: <span id="bed3Status">กำลังโหลด...</span></p>
+            
+        </div>
+    </div>
+
+    <script>
+        // ฟังก์ชันในการดึงข้อมูลสถานะ
+        function fetchStatus() {
+            fetch("status.json")
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById("bed1Status").textContent = data.bed1 ? "ว่าง" : "ไม่ว่าง";
+                    document.getElementById("bed2Status").textContent = data.bed2 ? "ว่าง" : "ไม่ว่าง";
+                    document.getElementById("bed3Status").textContent = data.bed3 ? "ว่าง" : "ไม่ว่าง";
+                })
+                .catch(error => console.error("เกิดข้อผิดพลาด:", error));
+        }
+
+        fetchStatus();
+        setInterval(fetchStatus, 3000); // โหลดใหม่ทุก 3 วินาที
+
+        // ฟังก์ชันในการอัปเดตสถานะเตียง
+        function updateStatus(bedNumber, status) {
+            fetch("server.php", {
+                method: "POST",
+                headers: { "Content-Type": "application/x-www-form-urlencoded" },
+                body: `bed${bedNumber}=${status}`
+            }).then(response => response.text())
+              .then(data => { 
+                  alert("อัปเดตสำเร็จ!");
+              })
+              .catch(error => console.error("เกิดข้อผิดพลาด:", error));
+        }
+    </script>
+</body>
+</html>

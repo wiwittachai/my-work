@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>แอดมิน - จัดการเตียง</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #f1f8e9;
+            padding: 50px;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+            display: inline-block;
+            max-width: 350px;
+            border: 2px solid #0288d1;
+        }
+        h1 {
+            color: #0288d1;
+            margin-bottom: 30px;
+        }
+        .bed-status {
+            font-size: 20px;
+            margin: 10px 0;
+            text-align: left;
+        }
+        button {
+            background-color: #0288d1;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            font-size: 16px;
+            cursor: pointer;
+            border-radius: 5px;
+            margin: 5px;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #01579b;
+        }
+        .button-container {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 10px;
+        }
+        .button-container button {
+            flex: 1;
+            margin: 5px;
+        }
+        .bed-card {
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 2px solid #0288d1;
+            border-radius: 10px;
+            box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>อัปเดทสถานะเตียงในห้องพยาบาล</h1>
+
+        <div class="bed-card">
+            <div class="bed-status">
+                <label>เตียงที่ 1:</label>
+            </div>
+            <div class="button-container">
+                <button onclick="updateStatus(1, true)">ว่าง</button>
+                <button onclick="updateStatus(1, false)">ไม่ว่าง</button>
+            </div>
+        </div>
+
+        <div class="bed-card">
+            <div class="bed-status">
+                <label>เตียงที่ 2:</label>
+            </div>
+            <div class="button-container">
+                <button onclick="updateStatus(2, true)">ว่าง</button>
+                <button onclick="updateStatus(2, false)">ไม่ว่าง</button>
+            </div>
+        </div>
+
+        <div class="bed-card">
+            <div class="bed-status">
+                <label>เตียงที่ 3:</label>
+            </div>
+            <div class="button-container">
+                <button onclick="updateStatus(3, true)">ว่าง</button>
+                <button onclick="updateStatus(3, false)">ไม่ว่าง</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ฟังก์ชันที่ใช้ในการอัปเดตสถานะเตียง
+        function updateStatus(bedNumber, status) {
+            // ส่งข้อมูลผ่าน AJAX (ใช้ Fetch API)
+            fetch("server.php", {
+                method: "POST",
+                headers: { "Content-Type": "application/x-www-form-urlencoded" },
+                body: `bed${bedNumber}=${status}`
+            }).then(response => response.text())
+              .then(data => { 
+                  alert("อัปเดตสำเร็จ!");
+              })
+              .catch(error => console.error("เกิดข้อผิดพลาด:", error));
+        }
+    </script>
+</body>
+</html>
